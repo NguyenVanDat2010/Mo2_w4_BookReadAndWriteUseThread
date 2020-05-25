@@ -1,20 +1,22 @@
 package book;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String bookCode;
     private String name;
     private double price;
     private String author;
 
-    protected Book() {
+    public Book() {
     }
 
-    protected Book(String name, double price) {
+    public Book(String name, double price) {
         this.name = name;
         this.price = price;
     }
 
-    protected Book(String bookCode, String name, double price, String author) {
+    public Book(String bookCode, String name, double price, String author) {
         this.bookCode = bookCode;
         this.name = name;
         this.price = price;

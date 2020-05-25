@@ -1,15 +1,17 @@
 import book.*;
 
+import javax.imageio.stream.FileCacheImageOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends Book {
     static List<ProgrammingBook> programmingBooks;
-    static List<Book> fictionBooks;
+    static List<FictionBook> fictionBooks;      //List<Book> fictionBooks;
 
     static {
         programmingBooks = new ArrayList<>();
-        programmingBooks.add(new ProgrammingBook("bc01", "Code Complete 2", 250000.0, "Steve McConnell", "Java", "Spring MVC"));
+        ProgrammingBook pb1 = new ProgrammingBook("bc01", "Code Complete 2", 250000.0, "Steve McConnell", "Java", "Spring MVC");
         programmingBooks.add(new ProgrammingBook("bc02", "Yellow book", 110000.0, "Rob Miles", "C#", ".Net"));
         programmingBooks.add(new ProgrammingBook("bc03", "Peopleware ", 350000.0, "Tom DeMarco ", "Java", "Spring MVC"));
         programmingBooks.add(new ProgrammingBook("bc04", "Programming Pearls", 260000.0, "Jon Bentley", "Java", "Spring MVC"));
@@ -24,36 +26,27 @@ public class Main extends Book {
     }
 
     public static void main(String[] args) {
-        /**Đọc và ghi cho ProgrammingBook*/
-        ObjectBinaryListProgramingBook binaryListProgramingBook = new ObjectBinaryListProgramingBook();
-        String pathProgram = "programingBook.txt";
-        //Ghi file
-        binaryListProgramingBook.writeObjectBinaryPro(pathProgram, programmingBooks);
 
-        //Đọc file
-        ProgrammingBook programmingBook=new ProgrammingBook("programingBook.txt");
-        Thread thread1=new Thread(programmingBook);
+        /**Đọc và ghi cho ProgrammingBook*/
+        String pathProgram = "programingBook.txt";
+        ProgrammingBook programmingBook = new ProgrammingBook(pathProgram);
+
+        //Ghi file programmingBook
+        programmingBook.writeObjectBinaryPro(pathProgram, programmingBooks);
+
+        //Đọc file programmingBook
+        Thread thread1 = new Thread(programmingBook);
         thread1.start();
 
         /**Đọc và ghi cho FictionBook*/
-        ObjectBinaryListFictionBook binaryListFictionBook = new ObjectBinaryListFictionBook();
         String pathFiction = "fictionBook.txt";
+        FictionBook fictionBook = new FictionBook(pathFiction);
 
-        //Ghi file
-//        List<FictionBook> fictionBook = new ArrayList<>();
-//        for (int i = 0; i < fictionBooks.size(); i++) {
-//            if (fictionBooks.get(i) instanceof FictionBook) {
-//                FictionBook book = (FictionBook) fictionBooks.get(i);
-//                fictionBook.add(book);
-//            }
-//        }
-//        binaryListFictionBook.writeObjectBinaryFic(pathFiction, fictionBook);
+        //Ghi file fictionBook
+        fictionBook.writeObjectBinaryFic(pathFiction, fictionBooks);
 
-        binaryListFictionBook.writeObjectBinaryFic(pathFiction,fictionBooks);
-
-        //Đọc file
-        FictionBook fictionBook=new FictionBook("fictionBook.txt");
-        Thread thread2=new Thread(fictionBook);
+        //Đọc file fictionBook
+        Thread thread2 = new Thread(fictionBook);
         thread2.start();
 
 //        List<FictionBook> fictionBookList = new ArrayList<>();

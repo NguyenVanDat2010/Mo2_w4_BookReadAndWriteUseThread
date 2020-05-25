@@ -4,10 +4,11 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProgrammingBook extends Book implements Serializable,Runnable {
+public class ProgrammingBook extends Book implements Runnable {
     private String language;
     private String framework;
     private String path;
+    private List<ProgrammingBook>list=new ArrayList<>();
 
     public ProgrammingBook() {
     }
@@ -17,6 +18,7 @@ public class ProgrammingBook extends Book implements Serializable,Runnable {
     }
 
     public ProgrammingBook(String language, String framework) {
+
         this.language = language;
         this.framework = framework;
     }
@@ -50,7 +52,37 @@ public class ProgrammingBook extends Book implements Serializable,Runnable {
 
     @Override
     public String toString() {
+
         return super.toString() + ", Language: " + getLanguage() + " and Framework: " + getFramework();
+    }
+
+    /**Ghi dữ liệu ProgrammingBook vào file programingBook.txt*/
+    public void writeObjectBinaryPro(String path, List<ProgrammingBook> list) {
+        BufferedOutputStream bufferedOutputStream;
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            File filePath = new File(path);
+
+            if (!filePath.exists()) {
+                throw new FileNotFoundException("File ko tồn tại");
+            }
+
+            bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(filePath));
+            objectOutputStream = new ObjectOutputStream(bufferedOutputStream);
+
+            for (ProgrammingBook programmingBook : list) {
+                objectOutputStream.writeObject(programmingBook);
+            }
+
+            bufferedOutputStream.close();
+
+        } catch (FileNotFoundException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
+        } catch (ExceptionInInitializerError e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -71,16 +103,12 @@ public class ProgrammingBook extends Book implements Serializable,Runnable {
             while ((programmingBook = (ProgrammingBook) objectInputStream.readObject()) != null) {
                 programmingBookList.add(programmingBook);
             }
-
             bufferedInputStream.close();
-        } catch (FileNotFoundException fileNotFoundException) {
-            fileNotFoundException.printStackTrace();
+
         } catch (EOFException e) {
             System.out.println("Hết dữ liệu");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | IOException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
         }
         System.out.println(programmingBookList);
     }
